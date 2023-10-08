@@ -1,36 +1,44 @@
+<!-- index.html -->
+
+<!--
+    Overview:
+    This is a simple search template for a Context Search application. The main components are:
+    - A search box for users to input their search query.
+    - A button to submit the search query.
+    - A section to display the matched paragraph from the search results.
+
+    Dependencies:
+    - Uses external CSS from the 'static/style.css' file.
+    
+    Usage:
+    - When a user inputs a query in the search box and clicks 'Search', the form submits the query to the '/search' endpoint.
+    - If the search query matches any paragraph, it is displayed below the search box.
+-->
+
+
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Context Search</title>
-    <style>
-        /* Simple styling for the search box and button */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 10%;
-        }
-        .search-container {
-            display: inline-block;
-        }
-        input[type="text"] {
-            width: 300px;
-            padding: 10px;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-        }
-    </style>
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
+    <!-- Search Container: Holds the form for user's search query -->
     <div class="search-container">
         <form action="/search" method="post">
             <input type="text" name="query" placeholder="Search...">
             <input type="submit" value="Search">
         </form>
     </div>
+
+    <!-- Display Results: Shows the matched paragraph, if any -->
     {% if result %}
     <p><strong>Matched Paragraph:</strong></p>
     <p>{{ result|safe }}</p>
     {% endif %}
 </body>
+
 </html>

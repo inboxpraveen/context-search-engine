@@ -1,20 +1,66 @@
 import os
-import faiss
 import pickle
-import torch
+
+import faiss
 import numpy as np
+
+import torch
 from transformers import DistilBertTokenizer, DistilBertModel
 
 
-# Initialization of model
-tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
-model = DistilBertModel.from_pretrained('distilbert-base-uncased')
+# GLOBAL CONSTANTS
+MODEL_PATH = 'distilbert-base-uncased'
+DIMENSION = 768
+NLIST = 2
+INDEX_PATH = "faiss_index.idx"
+CHUNK_MAPPING_PATH = "index_to_chunk.pkl"
+MAX_CHUNK_SIZE = 64
 
-# 1. Function to generate embeddings
+
+# Initialization of model
+TOKENIZER = DistilBertTokenizer.from_pretrained(MODEL_PATH)
+MODEL = DistilBertModel.from_pretrained(MODEL_PATH)
+
+
 def get_embedding(text, pooling='mean'):
-    input_ids = tokenizer.encode(text, return_tensors="pt", truncation=True)
+    """
+    Compute the embeddings for a given text using DistilBert.
+    
+    Parameters:
+    - text (str): The text for which embeddings are to be generated.
+    - pooling (str, optional): The type of pooling to be applied. 
+                               Can be 'mean', 'max', or 'mean_max'. 
+                               Defaults to 'mean'.
+                               
+    Returns:
+    - numpy.ndarray: The computed embedding.
+    
+    Pooling Techniques Explained:
+    --------------------------------
+    Pooling is a technique to aggregate a sequence of embeddings into a single embedding vector. 
+    Given a text with N tokens, we get an NxD matrix of embeddings (D is the embedding dimension). 
+    To transform this into a 1xD embedding, we use pooling. Here's how each technique works:
+
+    - Mean Pooling:
+        We take the average of all embeddings in the sequence.
+        Example: For embeddings [2, 4, 6] and [3, 6, 9], mean pooling results in [2.5, 5, 7.5].
+
+    - Max Pooling:
+        We take the maximum value in each dimension across all embeddings in the sequence.
+        Example: For embeddings [2, 4, 6] and [3, 6, 9], max pooling results in [3, 6, 9].
+
+    - Min Pooling:
+        We take the minimum value in each dimension across all embeddings in the sequence.
+        Example: For embeddings [2, 4, 6] and [3, 6, 9], min pooling results in [2, 4, 6].
+    
+    Example:
+    >>> embedding = get_embedding("Hello, world!")
+    >>> print(embedding.shape)
+    (1, 768)
+    """
+    input_ids = TOKENIZER.encode(text, return_tensors="pt", truncation=True)
     with torch.no_grad():
-        output = model(input_ids)
+        output = MODEL(input_ids)
     if pooling == 'mean':
         return output.last_hidden_state.mean(dim=1).numpy()
     elif pooling == 'max':
@@ -25,25 +71,50 @@ def get_embedding(text, pooling='mean'):
         return np.concatenate([mean_pooled, max_pooled], axis=1)
 
 
-# 2. Chunk the document into max_size
-def chunk_document(document, max_size=64):
+def chunk_document(document, max_size=MAX_CHUNK_SIZE):
+    """
+    Split the document into smaller chunks of maximum size.
+    
+    Parameters:
+    - document (str): The text document to be split.
+    - max_size (int, optional): The maximum number of words per chunk. 
+                                Defaults to MAX_CHUNK_SIZE.
+                                
+    Yields:
+    - str: Chunks of the document.
+    
+    Example:
+    >>> chunks = list(chunk_document("This is a sample document with more than eight words."))
+    >>> for chunk in chunks:
+    ...     print(chunk)
+    ...
+    This is a sample document with more
+    than eight words.
+    """
     words = document.split()
     for i in range(0, len(words), max_size):
         yield ' '.join(words[i:i+max_size])
 
-# For maintaining index to each document.
-index_to_chunk = {}
 
-
-# 3. Creating FAISS Index for all the documents
 def create_faiss_index(folder_path):
-    dimension = 768
-    quantizer = faiss.IndexFlatL2(dimension)
-    # nlist = min(100, len(embeddings))
-    nlist = 2
-    index = faiss.IndexIVFFlat(quantizer, dimension, nlist, faiss.METRIC_L2)
+    """
+    Create and save a FAISS index for all the documents in the provided folder.
+    
+    Parameters:
+    - folder_path (str): Path to the folder containing the .txt documents.
+    
+    Writes:
+    - An index file (faiss_index.idx) and a mapping file (index_to_chunk.pkl) to disk.
+    
+    Example:
+    >>> create_faiss_index('./docs/')
+    >>> # This will generate 'faiss_index.idx' and 'index_to_chunk.pkl'
+    """
+    index_to_chunk = {}
 
-    # Need to train the index before adding data
+    quantizer = faiss.IndexFlatL2(DIMENSION)
+    index = faiss.IndexIVFFlat(quantizer, DIMENSION, NLIST, faiss.METRIC_L2)
+
     embeddings = []
     for filename in os.listdir(folder_path):
         if filename.endswith(".txt"):
@@ -68,8 +139,8 @@ def create_faiss_index(folder_path):
                     index_to_chunk[current_index] = chunk
                     current_index += 1
 
-    faiss.write_index(index, "faiss_index.idx")
-    with open("index_to_chunk.pkl", "wb") as f:
+    faiss.write_index(index, INDEX_PATH)
+    with open(CHUNK_MAPPING_PATH, "wb") as f:
         pickle.dump(index_to_chunk, f)
 
 
