@@ -1,6 +1,6 @@
 # Contextual Text Search Engine Using Vector Data and FAISS
 
-The primary objective of this project is to provide a user-friendly interface that enables users to perform contextual searches across a corpus of text documents. By leveraging the power of Hugging Face's Distil BERT and Facebook's FAISS, we aim to return highly relevant text passages based on the semantic meaning of the user's query rather than mere keyword matches. This project serves as a starting point for developers, researchers, and enthusiasts who wish to dive deeper into the world of contextualized text search and enhance their applications with state-of-the-art NLP techniques.
+The primary objective of this project is to provide a user-friendly interface that enables users to perform contextual searches across a corpus of text documents. By leveraging the power of Hugging Face's Distil BERT and Facebook's FAISS, I aim to return highly relevant text passages based on the semantic meaning of the user's query rather than mere keyword matches. This project serves as a starting point for developers, researchers, and enthusiasts who wish to dive deeper into the world of contextualized text search and enhance their applications with state-of-the-art NLP techniques.
 
 
 
@@ -22,7 +22,7 @@ The current version of this project encompasses:
 
 - A basic web interface built using Flask where users can input and submit their search queries.
 - A backend search engine that:
-  - Transforms user queries into semantic vectors using DistilBERT.
+  - Transforms user queries into semantic vectors using Distil BERT.
   - Efficiently compares the query vector against a pre-indexed set of vectors (corresponding to text documents) stored in a FAISS index.
   - Returns the most contextually relevant text passage from the corpus.
   - Highlights the keywords in the returned text passage that are contextually matched.
@@ -88,11 +88,22 @@ There's always room for enhancements. Here are some potential improvements and a
 
 
 
-## License
+## 7. License
 
-This project is under the MIT License. Feel free to use, modify, distribute, and contribute.
+This project is under the MIT License. Feel free to use, modify, distribute, and contribute. You can use this project but make sure to cite it as.
+
+```shell
+{
+	repo:'https://github.com/inboxpraveen/context-search-engine',
+	name:'Praveen Kumar',
+	user_name:'inboxpraveen'
+}
+```
+
+
 
 ## Contributing
 
-If you're interested in improving this project or adding new features, your contributions are welcome! Please open a Pull Request or Issue on this repository.
+If you're interested in improving this project, your contributions are welcome! Please open a Pull Request or Issue on this repository. I am essentially prioritizing the above things to do for improvements. Other pull requests will also be considered but less prioritized.
 
+Thanks in advance for your interest. :happy:
