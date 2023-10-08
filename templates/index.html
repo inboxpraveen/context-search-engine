@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Context Search</title>
+    <style>
+        /* Simple styling for the search box and button */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 10%;
+        }
+        .search-container {
+            display: inline-block;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <form action="/search" method="post">
+            <input type="text" name="query" placeholder="Search...">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    {% if result %}
+    <p><strong>Matched Paragraph:</strong></p>
+    <p>{{ result|safe }}</p>
+    {% endif %}
+</body>
+</html>
