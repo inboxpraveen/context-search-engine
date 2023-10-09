@@ -4,22 +4,23 @@ import pickle
 import faiss
 import numpy as np
 
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 import torch
-from transformers import DistilBertTokenizer, DistilBertModel
+from transformers import BertTokenizer, BertModel
 
 
 # GLOBAL CONSTANTS
-MODEL_PATH = 'distilbert-base-uncased'
-DIMENSION = 768
+MODEL_PATH = 'bert-base-uncased'
+DIMENSION = 384
 NLIST = 2
 INDEX_PATH = "faiss_index.idx"
 CHUNK_MAPPING_PATH = "index_to_chunk.pkl"
-MAX_CHUNK_SIZE = 64
+MAX_CHUNK_SIZE = 128
 
 
 # Initialization of model
-TOKENIZER = DistilBertTokenizer.from_pretrained(MODEL_PATH)
-MODEL = DistilBertModel.from_pretrained(MODEL_PATH)
+TOKENIZER = BertTokenizer.from_pretrained(MODEL_PATH)
+MODEL = BertModel.from_pretrained(MODEL_PATH)
 
 
 def get_embedding(text, pooling='mean'):
@@ -96,6 +97,10 @@ def chunk_document(document, max_size=MAX_CHUNK_SIZE):
         yield ' '.join(words[i:i+max_size])
 
 
+def preprocess_text(text):
+    return ' '.join([word for word in text.lower().split() if word not in ENGLISH_STOP_WORDS])
+
+
 def create_faiss_index(folder_path):
     """
     Create and save a FAISS index for all the documents in the provided folder.
@@ -110,35 +115,31 @@ def create_faiss_index(folder_path):
     >>> create_faiss_index('./docs/')
     >>> # This will generate 'faiss_index.idx' and 'index_to_chunk.pkl'
     """
+
     index_to_chunk = {}
 
-    quantizer = faiss.IndexFlatL2(DIMENSION)
+    quantizer = faiss.IndexHNSWFlat(DIMENSION, 32)
     index = faiss.IndexIVFFlat(quantizer, DIMENSION, NLIST, faiss.METRIC_L2)
-
-    embeddings = []
+    
+    all_embeddings = []
+    all_chunks = []
     for filename in os.listdir(folder_path):
         if filename.endswith(".txt"):
             with open(os.path.join(folder_path, filename), 'r', encoding="utf-8") as f:
-                content = f.read()
+                content = preprocess_text(f.read())
                 for chunk in chunk_document(content):
                     embedding = get_embedding(chunk)
-                    embeddings.append(embedding)
-
-    embeddings_np = np.vstack(embeddings)
+                    all_embeddings.append(embedding)
+                    all_chunks.append(chunk)
+                    
+    embeddings_np = np.vstack(all_embeddings)
     faiss.normalize_L2(embeddings_np)
     index.train(embeddings_np)
     
-    current_index = 0
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".txt"):
-            with open(os.path.join(folder_path, filename), 'r', encoding="utf-8") as f:
-                content = f.read()
-                for chunk in chunk_document(content):
-                    embedding = get_embedding(chunk)
-                    index.add(embedding)
-                    index_to_chunk[current_index] = chunk
-                    current_index += 1
-
+    for i, embedding in enumerate(all_embeddings):
+        index.add(embedding)
+        index_to_chunk[i] = all_chunks[i]
+    
     faiss.write_index(index, INDEX_PATH)
     with open(CHUNK_MAPPING_PATH, "wb") as f:
         pickle.dump(index_to_chunk, f)
