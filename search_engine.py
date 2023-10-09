@@ -9,7 +9,7 @@ from transformers import DistilBertTokenizer, DistilBertModel
 
 # GLOBAL CONSTANTS
 MODEL_PATH = 'bert-large-uncased'
-DIMENSION = 384
+DIMENSION = 1024
 INDEX_PATH = "faiss_index.idx"
 CHUNK_MAPPING_PATH = "index_to_chunk.pkl"
 

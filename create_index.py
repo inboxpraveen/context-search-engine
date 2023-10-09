@@ -10,8 +10,8 @@ from transformers import BertTokenizer, BertModel
 
 
 # GLOBAL CONSTANTS
-MODEL_PATH = 'bert-base-uncased'
-DIMENSION = 384
+MODEL_PATH = 'bert-large-uncased'
+DIMENSION = 1024
 NLIST = 2
 INDEX_PATH = "faiss_index.idx"
 CHUNK_MAPPING_PATH = "index_to_chunk.pkl"
