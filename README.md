@@ -6,7 +6,11 @@ The primary objective of this project is to showcase Vector Search Capabilities 
 
 My goal is to ensure we understand vector database behind the scenes from scratch.
 
+Screen Shot of Application:
 
+<img src="static/images/s1.png" alt="Screen Shot 1" />
+
+<img src="static/images/s2.png" alt="Screen Shot 2" />
 
 ## 1. Prerequisites
 
@@ -126,7 +130,7 @@ There's always room for enhancements. Here are some potential improvements and a
 
 ## 7. License
 
-This project is under the MIT License. Feel free to use by cite, modify, distribute, and contribute. Read more.
+This project is under the MIT License. Feel free to use by cite, modify, distribute, and contribute. [Read more](https://github.com/inboxpraveen/context-search-engine/blob/main/LICENSE).
 
 
 
