@@ -1,16 +1,12 @@
 # Contextual Text Search Engine Using Vector Data and FAISS
 
-<img src="static/images/img2.png" height="450" alt="Context Images" />
+<img src="static/images/img2.png" height="350" alt="Context Images" />
 
 The primary objective of this project is to showcase Vector Search Capabilities by providing a user-friendly interface that enables users to perform contextual searches across a corpus of text documents. By leveraging the power of Hugging Face's BERT and Facebook's FAISS, we return highly relevant text passages based on the semantic meaning of the user's query rather than mere keyword matches. This project serves as a starting point for developers, researchers, and enthusiasts who wish to dive deeper into the world of contextualized text search and enhance their applications with state-of-the-art NLP techniques. 
 
 My goal is to ensure we understand vector database behind the scenes from scratch.
 
 
-
-**Table of Contents**
-
-[TOC]
 
 ## 1. Prerequisites
 
@@ -138,4 +134,4 @@ This project is under the MIT License. Feel free to use by cite, modify, distrib
 
 If you're interested in improving this project, your contributions are welcome! Please open a Pull Request or Issue on this repository. I am essentially prioritizing the above things to do for improvements. Other pull requests will also be considered but less prioritized.
 
-Thanks in advance for your interest. :happy: 
+Thanks in advance for your interest. :happy: . 
