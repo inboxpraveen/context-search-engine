@@ -8,8 +8,8 @@ from transformers import DistilBertTokenizer, DistilBertModel
 
 
 # GLOBAL CONSTANTS
-MODEL_PATH = 'bert-large-uncased'
-DIMENSION = 1024
+MODEL_PATH = 'distilbert-base-uncased'
+DIMENSION = 768
 INDEX_PATH = "faiss_index.idx"
 CHUNK_MAPPING_PATH = "index_to_chunk.pkl"
 

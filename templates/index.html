@@ -21,24 +21,32 @@
 
 <head>
     <title>Context Search</title>
-    <!-- Link to the external stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <!-- Search Container: Holds the form for user's search query -->
+
+    <!-- Search Container: Holds the form for the user's search query -->
     <div class="search-container">
+        <h1>Context Based Vector Search Engine</h1>
         <form action="/search" method="post">
-            <input type="text" name="query" placeholder="Search...">
-            <input type="submit" value="Search">
+            <input type="text" name="query" placeholder="Search..." required>
+            <input type="submit" value="Search" class="submit-button">
         </form>
     </div>
 
     <!-- Display Results: Shows the matched paragraph, if any -->
-    {% if result %}
-    <p><strong>Matched Paragraph:</strong></p>
-    <p>{{ result|safe }}</p>
-    {% endif %}
+    <div class="result-container">
+        {% if result %}
+            <p>You Searched for: <span class="searched_for">{{ searched_for }}</span></p>
+            <h3 class="result_heading">Closest Vector Matched Document</h3>
+            <p>{{ result|safe }}</p>
+        {% endif %}
+    </div>
 </body>
 
 </html>
+

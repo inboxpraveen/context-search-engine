@@ -45,8 +45,9 @@ def search():
     POST to http://localhost:5000/search with form data containing a 'query'.
     """
     query = request.form['query']  # Extracting the query from the form
+    query = query.strip()
     result = search_in_index(query)  # Searching the index for the query
-    return render_template('index.html', result=result)
+    return render_template('index.html', result=result, searched_for=query)
 
 
 if __name__ == '__main__':

@@ -6,21 +6,21 @@ import numpy as np
 
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 import torch
-from transformers import BertTokenizer, BertModel
+from transformers import DistilBertTokenizer, DistilBertModel
 
 
 # GLOBAL CONSTANTS
-MODEL_PATH = 'bert-large-uncased'
-DIMENSION = 1024
+MODEL_PATH = 'distilbert-base-uncased'
+DIMENSION = 768
 NLIST = 2
 INDEX_PATH = "faiss_index.idx"
 CHUNK_MAPPING_PATH = "index_to_chunk.pkl"
-MAX_CHUNK_SIZE = 128
+MAX_CHUNK_SIZE = 64
 
 
 # Initialization of model
-TOKENIZER = BertTokenizer.from_pretrained(MODEL_PATH)
-MODEL = BertModel.from_pretrained(MODEL_PATH)
+TOKENIZER = DistilBertTokenizer.from_pretrained(MODEL_PATH)
+MODEL = DistilBertModel.from_pretrained(MODEL_PATH)
 
 
 def get_embedding(text, pooling='mean'):
