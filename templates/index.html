@@ -23,7 +23,7 @@
     <title>Context Search</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/icon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
@@ -32,8 +32,8 @@
     <!-- Search Container: Holds the form for the user's search query -->
     <div class="search-container">
         <h1>Context Based Vector Search Engine</h1>
-        <form action="/search" method="post">
-            <input type="text" name="query" placeholder="Search..." required>
+        <form action="/search" method="post" autocomplete="off">
+            <input type="text" name="query" placeholder="Search..." autocomplete="off" required>
             <input type="submit" value="Search" class="submit-button">
         </form>
     </div>

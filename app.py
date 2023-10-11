@@ -47,6 +47,9 @@ def search():
     query = request.form['query']  # Extracting the query from the form
     query = query.strip()
     result = search_in_index(query)  # Searching the index for the query
+    print("Result before: ", result)
+    result = result.replace("\n", "<br>")
+    print("Result after: ", result)
     return render_template('index.html', result=result, searched_for=query)
 
 
