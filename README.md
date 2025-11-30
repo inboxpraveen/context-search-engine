@@ -114,7 +114,7 @@ context-search-engine/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/inxbopraveen/context-search-engine.git
+   git clone https://github.com/inboxpraveen/context-search-engine.git
    cd context-search-engine
    ```
 
@@ -257,7 +257,7 @@ We welcome contributions from everyone! Whether you're fixing a bug, adding a fe
 
 ### Reporting Issues
 
-Found a bug or have a suggestion? [Open an issue](https://github.com/inxbopraveen/context-search-engine/issues) with:
+Found a bug or have a suggestion? [Open an issue](https://github.com/inboxpraveen/context-search-engine/issues) with:
 - Clear description
 - Steps to reproduce (for bugs)
 - Expected vs actual behavior
