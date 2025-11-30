@@ -2,7 +2,7 @@
 
 > An AI-powered semantic document search system for learning, research, and real-world experimentation
 
-![Application Screenshot - Placeholder](./static/images/app-main-screenshot.png)
+![Project Overview](./static/images/Project-Overview.png)
 
 ## 🎯 What is this Project?
 
@@ -39,58 +39,26 @@ Think of it as your personal laboratory for understanding how search engines lik
 
 ## 📸 Screenshots
 
-### Upload Interface
-![Upload Screen - Placeholder](./static/images/upload-screen.png)
+### Upload Interfaces
+![Upload Screen 1](./static/images/1.Inital-Screen.png)
 
-### Search Interface
-![Search Screen - Placeholder](./static/images/search-screen.png)
+![Upload Screen 1](./static/images/2.Manual-Upload.png)
+
+### Search
+![Search Screen](./static/images/3.Existing-User-Screen.png)
+
+![Search Screen](./static/images/4.Search-Results.png)
 
 ### Document Management
-![Document Management - Placeholder](./static/images/document-management.png)
+![Document Management - Placeholder](./static/images/5.View-Documents.png)
+
+![Document Management - Placeholder](./static/images/6.Delete-Document.png)
 
 ## 🏗️ Architecture
 
 The application follows a simple, modular architecture:
 
-```
-┌─────────────┐
-│   User      │
-│  Interface  │
-│  (Flask)    │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────────────────────────────┐
-│     Document Processing Layer       │
-│                                     │
-│  ┌──────────┐    ┌──────────────┐  │
-│  │  PDF/    │───▶│   Text       │  │
-│  │  DOCX/   │    │  Extraction  │  │
-│  │  TXT     │    └──────────────┘  │
-│  └──────────┘           │          │
-│                         ▼          │
-│                  ┌──────────────┐  │
-│                  │   Chunking   │  │
-│                  └──────────────┘  │
-└────────────────────┬────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────┐
-│      Embedding & Indexing Layer     │
-│                                     │
-│  ┌──────────────┐    ┌──────────┐  │
-│  │  DistilBERT  │───▶│  FAISS   │  │
-│  │  Embeddings  │    │  Index   │  │
-│  └──────────────┘    └──────────┘  │
-└────────────────────┬────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────┐
-│         Search & Retrieval          │
-│                                     │
-│  Query → Embedding → Search → Results│
-└─────────────────────────────────────┘
-```
+![Project Architecture](./static/images/Project-Architecture.png)
 
 ### How It Works
 
@@ -146,7 +114,7 @@ context-search-engine/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/context-search-engine.git
+   git clone https://github.com/inxbopraveen/context-search-engine.git
    cd context-search-engine
    ```
 
@@ -289,7 +257,7 @@ We welcome contributions from everyone! Whether you're fixing a bug, adding a fe
 
 ### Reporting Issues
 
-Found a bug or have a suggestion? [Open an issue](https://github.com/yourusername/context-search-engine/issues) with:
+Found a bug or have a suggestion? [Open an issue](https://github.com/inxbopraveen/context-search-engine/issues) with:
 - Clear description
 - Steps to reproduce (for bugs)
 - Expected vs actual behavior
@@ -328,9 +296,9 @@ Just remember to:
 
 ## 📬 Contact & Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/context-search-engine/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/context-search-engine/discussions)
-- **Email**: your.email@example.com
+- **Issues**: [GitHub Issues](https://github.com/inboxpraveen/context-search-engine/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/inboxpraveen/context-search-engine/discussions)
+- **Email**: inboxpraveen.17@gmail.com
 
 ---
 
