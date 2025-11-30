@@ -1,141 +1,339 @@
-# Contextual Text Search Engine Using Vector Data and FAISS
+# Context Search Engine
 
-<img src="static/images/Context Search Tool Image.png" alt="Context Images" />
+> An AI-powered semantic document search system for learning, research, and real-world experimentation
 
-The primary objective of this project is to showcase Vector Search Capabilities by providing a user-friendly interface that enables users to perform contextual searches across a corpus of text documents. By leveraging the power of Hugging Face's BERT and Facebook's FAISS, we return highly relevant text passages based on the semantic meaning of the user's query rather than mere keyword matches. This project serves as a starting point for developers, researchers, and enthusiasts who wish to dive deeper into the world of contextualized text search and enhance their applications with state-of-the-art NLP techniques. 
+![Application Screenshot - Placeholder](./static/images/app-main-screenshot.png)
 
-My goal is to ensure we understand vector database behind the scenes from scratch.
+## 🎯 What is this Project?
 
-Screen Shot of Application:
+This project is a hands-on learning tool that demonstrates the complete journey from **Data Ingestion to Query Filtering** using modern vector search technology. It's designed for:
 
-<img src="static/images/s1.png" alt="Screen Shot 1" />
+- **Students & College Grads**: Learn how semantic search works in practice, not just theory
+- **Researchers**: Test and experiment with your own documents and models
+- **Developers**: Understand the fundamentals of vector databases and embeddings
+- **Data Scientists**: Perform A/B testing on different models and document processing techniques
 
-<img src="static/images/s2.png" alt="Screen Shot 2" />
+Think of it as your personal laboratory for understanding how search engines like Google actually understand what you're looking for, not just match keywords.
 
-## 1. Prerequisites
+## ✨ Key Features
 
-In order to run on your system, you can install the all the necessary packages via pip using requirements files:
+### Current Features
 
-```shell
-pip install -r requirements.txt
-```
+- **📁 Document Upload**: Drag & drop PDF, Word, and text files
+- **🔍 Smart Search**: Type-ahead search that understands context, not just keywords
+- **🧠 AI-Powered**: Uses DistilBERT for semantic understanding
+- **⚡ Fast Search**: FAISS vector database for lightning-quick results
+- **📊 Document Management**: View, organize, and delete your documents
+- **🎨 Clean Interface**: Minimalist glassmorphism design
+- **📱 Fully Responsive**: Works on desktop, tablet, and mobile
+- **💾 Organized Storage**: Timestamp-based file organization
+- **🔒 Privacy First**: Everything runs locally on your machine
 
-For your information, I am using Python 3.10.1. 
+### What Makes It Special for Learning
 
-*However, if you have a GPU, you are requested to install FAISS GPU for faster and larger database integrations.*
+- **See the Process**: Watch how documents get chunked, embedded, and indexed
+- **Experiment Freely**: Upload your own documents and test different queries
+- **Real-World Testing**: Compare search results with different document types
+- **A/B Testing Ready**: Perfect for testing different embedding models or chunking strategies
+- **Transparent Architecture**: Clean, readable code that's easy to understand and modify
 
+## 📸 Screenshots
 
+### Upload Interface
+![Upload Screen - Placeholder](./static/images/upload-screen.png)
 
-## 2. Scope of the Project
+### Search Interface
+![Search Screen - Placeholder](./static/images/search-screen.png)
 
-The current version of this project encompasses:
+### Document Management
+![Document Management - Placeholder](./static/images/document-management.png)
 
-- A basic web interface built using Flask where users can input and submit their search queries.
-- A backend search engine that:
-  - Transforms user queries into semantic vectors using Distil BERT.
-  - Efficiently compares the query vector against a pre-indexed set of vectors (corresponding to text documents) stored in a FAISS index.
-  - Returns the most contextually relevant text passage from the corpus.
-  - Highlights the keywords in the returned text passage that are contextually matched.
+## 🏗️ Architecture
 
-While the project offers a functional contextual search system, it is designed to be modular, allowing for potential expansion and integration into larger systems or applications.
-
-
-
-## 3. Explanation of Overall Approach
-
-The foundation of this project lies in the belief that modern NLP techniques can offer far more accurate and contextually relevant search results compared to traditional keyword-based methods. Here's a breakdown of our approach:
-
-1. **User Interface**: The frontend, built using Flask, serves as the interaction point for the users. It's kept simple and intuitive.
-2. **Query Vectorization**: When a user submits a query, the backend system transforms it into a semantic vector using Distil BERT. This vector encapsulates the meaning of the query.
-3. **Searching with FAISS**: FAISS, an efficient similarity search library, is utilized to quickly compare the query vector against a pre-established index of vectors from the text corpus. The closest match, in terms of semantic meaning, is identified.
-4. **Returning Results**: Once the most relevant text passage is identified, the system also highlights keywords or phrases that match the user's query contextually, offering a visual cue to the user about why a particular passage was deemed relevant.
-5. **Iterative Refinement**: The underlying models and techniques are open to refinements based on newer research, user feedback, and specific application needs.
-
-Based on the approach, I have divided the project into 2 sections:
-
-**Section 1: Generating Searchable Vectored Data**
-
-In this section, we first read input from documents, break it down to smaller chunks, create vectors using BERT based model, and then store it efficiently using FAISS. Here is a flow diagram that illustrates the same.
-
-<img src="static/images/DB Approach.png" height="450px" alt="Database Approach" />
-
-We create FAISS Index file which contains vector representation of the chunked document. We also store index of each chunk. This is maintain so that we do not have to query the database/documents again. This helps us in removing redundant read operations. 
-
-We perform this section using create_index.py. It will generate the above 2 files. If you need to use other models, you are open to do it from HuggingFace hub :handshake:  
-
-> *Note: If you find issues in setting up hyperparameter for dimension, check the models config.json file to find details on dimension of the model you are trying to use.*
-
-**Section 2: Building Searchable Application Interface**
-
-In this section, my goal is to build an interface which can allow users to interact with the documents. I prioritize minimalistic design  without causing additional hurdles. 
-
-<img src="static/images/App Approach.png" alt="Application Integration Approach" height="450px" />
-
-
-
-## 4. Project Structure
-
-1. `index.html`: Front-end HTML page for inputting search queries.
-2. `app.py`: Flask application that serves the front-end and handles search queries.
-3. `search_engine.py`: Contains logic for embedding generation, FAISS searching, and keyword highlighting.
-
-```shell
-/context_search/
-    - templates/
-        - index.html
-    - static/
-    	- css/
-    		- style.css
-    	- images/
-    		- img1.png
-    		- img2.png
-    		- Approach.png files
-    - app.py
-    - search_engine.py
-    - create_index.py
-    - index_to_chunk.pkl
-    - faiss_index.idx
-```
-
-
-
-## 5. Usage
-
-1. Ensure you have a trained FAISS index (`faiss_index.idx`) and an accompanying mapping from index to text chunk (`index_to_chunk.pkl`). 
-2. Start the Flask application:
+The application follows a simple, modular architecture:
 
 ```
-python app.py 
--- OR --
-flask run --host=127.0.0.1 --port=5000
+┌─────────────┐
+│   User      │
+│  Interface  │
+│  (Flask)    │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────────────────────────────┐
+│     Document Processing Layer       │
+│                                     │
+│  ┌──────────┐    ┌──────────────┐  │
+│  │  PDF/    │───▶│   Text       │  │
+│  │  DOCX/   │    │  Extraction  │  │
+│  │  TXT     │    └──────────────┘  │
+│  └──────────┘           │          │
+│                         ▼          │
+│                  ┌──────────────┐  │
+│                  │   Chunking   │  │
+│                  └──────────────┘  │
+└────────────────────┬────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────┐
+│      Embedding & Indexing Layer     │
+│                                     │
+│  ┌──────────────┐    ┌──────────┐  │
+│  │  DistilBERT  │───▶│  FAISS   │  │
+│  │  Embeddings  │    │  Index   │  │
+│  └──────────────┘    └──────────┘  │
+└────────────────────┬────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────┐
+│         Search & Retrieval          │
+│                                     │
+│  Query → Embedding → Search → Results│
+└─────────────────────────────────────┘
 ```
 
-1. Open a web browser and go to `http://localhost:5000`.
-2. Enter a search query and observe the contextually relevant result.
+### How It Works
 
+1. **Document Upload**: User uploads documents (PDF, DOCX, TXT)
+2. **Text Extraction**: System extracts plain text from documents
+3. **Chunking**: Text is split into manageable chunks (500 words with 50-word overlap)
+4. **Embedding**: Each chunk is converted to a 768-dimensional vector using DistilBERT
+5. **Indexing**: Vectors are stored in FAISS for fast similarity search
+6. **Search**: User queries are converted to vectors and matched against indexed chunks
+7. **Results**: Top 3 most relevant chunks are returned with relevance scores
 
+## 📂 Project Structure
 
-## 6. Things to Do - for Improvements
+```
+context-search-engine/
+│
+├── app.py                      # Flask web application
+├── document_processor.py       # Document handling & indexing logic
+├── search_engine.py           # Legacy search (can be removed)
+├── create_index.py            # Legacy indexing (can be removed)
+│
+├── templates/
+│   └── index.html             # Main UI template
+│
+├── static/
+│   ├── css/
+│   │   └── style.css          # Glassmorphism styling
+│   └── images/                # UI assets & screenshots
+│
+├── uploads/                   # Document storage (timestamp-organized)
+│   └── YYYYMMDD/             # Date-based folders
+│       └── filename_HHMMSS.ext
+│
+├── faiss_index.idx            # FAISS vector index (generated)
+├── index_to_chunk.pkl         # Chunk mapping (generated)
+├── document_metadata.pkl      # Document metadata (generated)
+│
+├── requirements.txt           # Python dependencies
+├── .gitignore                # Git ignore rules
+└── README.md                 # This file
+```
 
-There's always room for enhancements. Here are some potential improvements and additional features that can be integrated:
+## 🚀 Getting Started
 
-1. **Scalability**: Currently, the system is built for relatively smaller corpora. Consider leveraging distributed systems or cloud-based solutions to handle larger datasets.
-2. **Advanced Highlighting**: Improve the keyword highlighting system to ensure that contextually relevant phrases (and not just individual words) are highlighted.
-3. **Feedback Loop**: Incorporate a user feedback mechanism where users can rate the relevance of the returned results. This can be used for fine-tuning the models in the future.
-4. **Support for Multiple Document Types**: Extend support for various document types such as PDF, DOCX, etc., allowing users to search across different formats.
-5. **Enhanced Frontend**: Improve the user interface, perhaps integrating advanced features like autocomplete, query suggestions, or a more sophisticated result display.
-6. **Support for Multilingual Searches**: Expand the system to support queries in multiple languages, returning results from a multilingual corpus.
+### Prerequisites
 
+- Python 3.8 or higher
+- pip (Python package manager)
+- 4GB RAM minimum (8GB recommended)
+- Internet connection (first run only, to download the DistilBERT model)
 
+### Installation
 
-## 7. License
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/context-search-engine.git
+   cd context-search-engine
+   ```
 
-This project is under the MIT License. Feel free to use by cite, modify, distribute, and contribute. [Read more](https://github.com/inboxpraveen/context-search-engine/blob/main/LICENSE).
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+   
+   This will install:
+   - Flask (Web framework)
+   - Transformers & PyTorch (For DistilBERT embeddings)
+   - FAISS (Vector similarity search)
+   - PyPDF2 (PDF processing)
+   - python-docx (Word document processing)
+   - Other supporting libraries
 
+3. **Run the application**
+   ```bash
+   python app.py
+   ```
 
+4. **Open your browser**
+   ```
+   Navigate to: http://localhost:5000
+   ```
 
-## 8. Contributing
+### First Time Use
 
-If you're interested in improving this project, your contributions are welcome! Please open a Pull Request or Issue on this repository. I am essentially prioritizing the above things to do for improvements. Other pull requests will also be considered but less prioritized.
+1. You'll see an upload screen (no documents yet)
+2. Drag & drop your documents or click to browse
+3. Upload PDF, Word (.docx), or text (.txt) files
+4. Wait for indexing to complete
+5. Start searching!
 
-Thanks in advance for your interest. :happy: . 
+### Using the Search
+
+- Type at least 3 characters to trigger search
+- Search happens automatically as you type (500ms delay)
+- Press Enter for immediate search
+- Results show relevance scores and source documents
+
+### Managing Documents
+
+- Click on the "Documents" stat card to view all documents
+- View document content by clicking "View"
+- Delete documents with confirmation (removes all indexes)
+
+## 🧪 Use Cases & Experiments
+
+### For Students
+
+- **Learn Vector Search**: See how text becomes numbers and how similarity works
+- **Understand Embeddings**: Experiment with different query phrasings
+- **Study Information Retrieval**: Compare semantic vs keyword search
+
+### For Researchers
+
+- **Test Document Processing**: Try different chunking sizes and overlaps
+- **Model Comparison**: Swap DistilBERT with other models (BERT, RoBERTa, etc.)
+- **Domain Testing**: Upload domain-specific documents and test accuracy
+
+### For Developers
+
+- **Integration Testing**: Use as a microservice in larger applications
+- **Performance Benchmarking**: Test with different document volumes
+- **UI/UX Experiments**: Modify the frontend for different use cases
+
+### A/B Testing Ideas
+
+1. **Different Models**: Compare DistilBERT vs BERT vs Sentence-BERT
+2. **Chunk Sizes**: Test 300 vs 500 vs 1000 word chunks
+3. **Embedding Dimensions**: Experiment with model dimensions
+4. **Pooling Methods**: Try mean, max, or CLS pooling
+
+## 🔮 What's Next
+
+### Planned Features
+
+- [ ] **Multi-User Support**: User authentication and personal document spaces
+- [ ] **Advanced Filters**: Filter by document type, date, or custom tags
+- [ ] **Batch Upload**: Upload entire folders at once
+- [ ] **Export Results**: Download search results as CSV or JSON
+- [ ] **Search History**: Track and revisit previous searches
+- [ ] **Highlighting**: Highlight matched text within documents
+- [ ] **Model Selection**: Choose between different embedding models
+- [ ] **API Endpoints**: RESTful API for programmatic access
+- [ ] **Cloud Deployment**: Docker container and deployment guides
+- [ ] **Analytics Dashboard**: Visualize search patterns and document stats
+
+### Future Improvements
+
+- **GPU Support**: FAISS GPU for faster indexing and search
+- **Multilingual**: Support for non-English documents
+- **OCR Integration**: Extract text from scanned PDFs and images
+- [ ] **Incremental Indexing**: Add documents without rebuilding entire index
+- **Advanced Chunking**: Smart chunking based on document structure
+- **Query Expansion**: Suggest related queries or autocomplete
+
+## 🤝 Contributing
+
+We welcome contributions from everyone! Whether you're fixing a bug, adding a feature, or improving documentation.
+
+### How to Contribute
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Make your changes**
+   - Write clean, readable code
+   - Add comments for complex logic
+   - Update documentation if needed
+4. **Test thoroughly**
+   - Test with different document types
+   - Check responsive design
+   - Verify search accuracy
+5. **Submit a Pull Request**
+   - Describe what you changed and why
+   - Reference any related issues
+   - Include screenshots for UI changes
+
+### Areas for Contribution
+
+- 🐛 **Bug Fixes**: Found a bug? Fix it!
+- ✨ **New Features**: Implement something from the "What's Next" section
+- 📚 **Documentation**: Improve README, add tutorials, or create guides
+- 🎨 **UI/UX**: Enhance the interface or add themes
+- 🧪 **Testing**: Add unit tests or integration tests
+- 🌍 **Localization**: Translate UI to other languages
+- 📊 **Examples**: Create example notebooks or tutorials
+
+### Code Style
+
+- Follow PEP 8 for Python code
+- Use meaningful variable and function names
+- Add docstrings to functions
+- Keep functions small and focused
+- Comment complex algorithms
+
+### Reporting Issues
+
+Found a bug or have a suggestion? [Open an issue](https://github.com/yourusername/context-search-engine/issues) with:
+- Clear description
+- Steps to reproduce (for bugs)
+- Expected vs actual behavior
+- Screenshots if applicable
+
+## 📚 Learning Resources
+
+Want to understand the concepts better?
+
+- **Vector Embeddings**: How text becomes numbers
+- **Semantic Search**: Why it's better than keyword matching
+- **FAISS**: Facebook's similarity search library
+- **BERT Models**: Understanding transformer-based embeddings
+- **Information Retrieval**: The science behind search engines
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+You are free to:
+- ✅ Use commercially
+- ✅ Modify
+- ✅ Distribute
+- ✅ Private use
+
+Just remember to:
+- Include the original license
+- State changes made
+
+## 🙏 Acknowledgments
+
+- **Hugging Face**: For the amazing Transformers library
+- **Facebook AI**: For FAISS vector search
+- **Flask Community**: For the web framework
+- **Open Source Community**: For all the supporting libraries
+
+## 📬 Contact & Support
+
+- **Issues**: [GitHub Issues](https://github.com/yourusername/context-search-engine/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/context-search-engine/discussions)
+- **Email**: your.email@example.com
+
+---
+
+**Star ⭐ this repo if you find it useful!**
+
+Made with ❤️ for learners, researchers, and developers exploring the world of semantic search.
