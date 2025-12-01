@@ -394,6 +394,8 @@ See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
 We welcome contributions from everyone! Whether you're fixing a bug, adding a feature, improving documentation, or sharing ideas.
 
+**📖 [Read our Contributing Guide](CONTRIBUTING.md) for detailed information on how to contribute.**
+
 ### How to Contribute
 
 1. **Fork the repository**
@@ -532,4 +534,4 @@ If this project helped you learn something new or solved a problem, please consi
 
 **Version 2.0.0** | Made with ❤️ for learners, researchers, and developers exploring the world of semantic search.
 
-**[View Changelog](CHANGELOG.md)** | **[Report Bug](https://github.com/inboxpraveen/context-search-engine/issues)** | **[Request Feature](https://github.com/inboxpraveen/context-search-engine/issues)**
+**[View Changelog](CHANGELOG.md)** | **[Contributing Guide](CONTRIBUTING.md)** | **[Report Bug](https://github.com/inboxpraveen/context-search-engine/issues)** | **[Request Feature](https://github.com/inboxpraveen/context-search-engine/issues)**
