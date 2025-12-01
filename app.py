@@ -7,8 +7,10 @@ from document_processor import (
     search_in_index, 
     get_metadata,
     delete_document,
-    get_document_content
+    get_document_content,
+    rebuild_index_with_new_config
 )
+from config import load_config, save_config, get_version
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'txt'}
@@ -41,18 +43,28 @@ def get_upload_path(filename):
 def index():
     metadata = get_metadata()
     has_documents = len(metadata.get('documents', [])) > 0
-    return render_template('index.html', has_documents=has_documents, metadata=metadata)
+    version = get_version()
+    config = load_config()
+    return render_template('index.html', 
+                         has_documents=has_documents, 
+                         metadata=metadata,
+                         version=version,
+                         config=config)
 
 
 @app.route('/search', methods=['POST'])
 def search():
     data = request.get_json()
     query = data.get('query', '').strip()
+    sort_by = data.get('sort_by', 'relevance')
     
     if not query:
         return jsonify({'results': [], 'query': query})
     
-    results = search_in_index(query, num_matches=3)
+    config = load_config()
+    num_results = config.get('num_search_results', 5)
+    
+    results = search_in_index(query, num_matches=num_results, sort_by=sort_by)
     return jsonify({'results': results, 'query': query})
 
 
@@ -117,6 +129,56 @@ def delete_doc(doc_id):
         metadata = get_metadata()
         return jsonify({'success': True, 'message': message, 'metadata': metadata})
     return jsonify({'success': False, 'error': message}), 404
+
+
+@app.route('/config', methods=['GET'])
+def get_config():
+    config = load_config()
+    return jsonify(config)
+
+
+@app.route('/config', methods=['POST'])
+def update_config():
+    data = request.get_json()
+    
+    current_config = load_config()
+    current_model = current_config.get('model_repo_id')
+    
+    # Update config
+    for key in ['model_repo_id', 'chunk_size', 'chunk_overlap', 'num_search_results', 'top_k', 'dimension']:
+        if key in data:
+            current_config[key] = data[key]
+    
+    save_config(current_config)
+    
+    # If model changed, offer to rebuild index
+    new_model = current_config.get('model_repo_id')
+    needs_rebuild = (current_model != new_model) or \
+                   (data.get('chunk_size') and data.get('chunk_size') != current_config.get('chunk_size')) or \
+                   (data.get('chunk_overlap') and data.get('chunk_overlap') != current_config.get('chunk_overlap'))
+    
+    return jsonify({
+        'success': True,
+        'config': current_config,
+        'needs_rebuild': needs_rebuild
+    })
+
+
+@app.route('/rebuild-index', methods=['POST'])
+def rebuild_index():
+    try:
+        success, message = rebuild_index_with_new_config()
+        if success:
+            metadata = get_metadata()
+            return jsonify({
+                'success': True,
+                'message': message,
+                'metadata': metadata
+            })
+        else:
+            return jsonify({'success': False, 'error': message}), 500
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 @app.route('/metadata', methods=['GET'])

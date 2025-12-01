@@ -1,6 +1,7 @@
 uploads/
 *.pkl
 *.idx
+app_config.json
 __pycache__/
 *.pyc
 *.pyo
