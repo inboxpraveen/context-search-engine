@@ -462,7 +462,6 @@ Have an idea? We'd love to hear it!
 Want to dive deeper into the concepts?
 
 ### Vector Embeddings
-- [Understanding Word Embeddings](https://towardsdatascience.com/word-embeddings-exploration-explanation-and-exploitation-with-code-in-python-5dac99d5d795)
 - [Sentence Transformers Documentation](https://www.sbert.net/)
 - [The Illustrated Word2vec](https://jalammar.github.io/illustrated-word2vec/)
 
@@ -481,7 +480,6 @@ Want to dive deeper into the concepts?
 
 ### Information Retrieval
 - [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/)
-- [Modern Information Retrieval](http://grupoweb.upf.es/mir2ed/)
 
 ## 📄 License
 
@@ -516,7 +514,6 @@ Special thanks to all contributors and users who provide feedback and help impro
 
 ### Get Help
 - **Issues**: [GitHub Issues](https://github.com/inboxpraveen/context-search-engine/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/inboxpraveen/context-search-engine/discussions)
 - **Email**: [inboxpraveen.17@gmail.com](mailto:inboxpraveen.17@gmail.com)
 
 ### Stay Updated
